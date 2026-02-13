@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Be My Valentine ❤️</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ffb6c1, #ff69b4);
+      text-align: center;
+      padding-top: 80px;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 45px;
+      color: darkred;
+      text-shadow: 2px 2px white;
+    }
+
+    p {
+      font-size: 20px;
+      color: #800000;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 20px;
+      margin: 15px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+    }
+
+    /* YES BUTTON DESIGN */
+    #yesBtn {
+      background: red;
+      color: white;
+      font-weight: bold;
+      box-shadow: 0px 0px 15px rgba(255, 0, 0, 0.6);
+      animation: pulse 1.5s infinite;
+    }
+
+    #yesBtn:hover {
+      transform: scale(1.2);
+      box-shadow: 0px 0px 30px rgba(255, 0, 0, 1);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* NO BUTTON */
+    #noBtn {
+      background: white;
+      color: red;
+      border: 2px solid red;
+      position: absolute;
+    }
+
+    /* Floating hearts when YES clicked */
+    .heart {
+      position: fixed;
+      color: red;
+      font-size: 25px;
+      animation: floatUp 3s linear forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-300px);
+      }
+    }
+
+    /* Falling hearts background */
+    .falling-heart {
+      position: fixed;
+      top: -20px;
+      font-size: 20px;
+      animation: fall 5s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(110vh); }
+    }
+
+    /* Love letter box */
+    #loveLetter {
+      display: none;
+      width: 80%;
+      max-width: 500px;
+      margin: 30px auto;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      font-size: 18px;
+      color: #800000;
+      box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
+    }
+
+    /* GIF popup */
+    #gifPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0px 0px 20px rgba(0,0,0,0.5);
+      z-index: 999;
+      text-align: center;
+    }
+
+    #gifPopup img {
+      width: 250px;
+      border-radius: 15px;
+    }
+
+    #closePopup {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Will You Be My Valentine? ❤️</h1>
+  <p>You make my world special 🥰</p>
+
+  <button id="yesBtn" onclick="yesClicked()">YES 💖</button>
+  <button id="noBtn" onmouseover="moveButton()">NO 💔</button>
+
+  <!-- Love Letter -->
+  <div id="loveLetter">
+    💌 <b>My Love Letter to You:</b><br><br>
+    From the moment you came into my life, everything became brighter 🌸<br><br>
+    You are my happiness, my peace, and my favorite person 💕<br><br>
+    Today and always… I choose you ❤️🥰<br><br>
+    <b>Happy Valentine’s Day 💖</b>
+  </div>
+
+  <!-- GIF Popup -->
+  <div id="gifPopup">
+    <h2>Yayyy!! 💕🥰</h2>
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Valentine GIF">
+    <br>
+    <button id="closePopup" onclick="closeGif()">Close ❤️</button>
+  </div>
+
+  <!-- Romantic sound -->
+  <audio id="loveSound">
+    <source src="https://www.soundjay.com/human/kiss-1.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Falling hearts background
+    function createFallingHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("falling-heart");
+      heart.innerHTML = "❤️";
+
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+      heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 6000);
+    }
+
+    setInterval(createFallingHeart, 300);
+
+    // YES button clicked
+    function yesClicked() {
+      document.getElementById("loveLetter").style.display = "block";
+      document.getElementById("gifPopup").style.display = "block";
+
+      // Play romantic sound
+      document.getElementById("loveSound").play();
+
+      // Create floating hearts effect
+      for (let i = 0; i < 25; i++) {
+        createHeart();
+      }
+    }
+
+    // Floating hearts on YES
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "💖";
+
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = window.innerHeight + "px";
+      heart.style.fontSize = (Math.random() * 30 + 15) + "px";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 3000);
+    }
+
+    // NO button movement
+    function moveButton() {
+      let x = Math.random() * (window.innerWidth - 100);
+      let y = Math.random() * (window.innerHeight - 50);
+
+      document.getElementById("noBtn").style.left = x + "px";
+      document.getElementById("noBtn").style.top = y + "px";
+    }
+
+    // Close GIF popup
+    function closeGif() {
+      document.getElementById("gifPopup").style.display = "none";
+    }
+  </script>
+
+</body>
+</html>
